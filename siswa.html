@@ -36,50 +36,46 @@
             </div>
         </header>
 
-        <main class="max-w-4xl w-full mx-auto p-4 md:p-6 flex-1 fade-smooth">
+        <main class="max-w-md w-full mx-auto p-4 flex-1 flex flex-col justify-center fade-smooth">
             
-            <div class="mb-6 bg-gradient-to-r from-orange-950/40 to-neutral-900/40 backdrop-blur-md p-5 rounded-2xl border border-orange-900/30 shadow-xl">
-                <h2 class="text-base font-black text-white mb-1 flex items-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-orange-400"></i> Transparansi Absensi Digital
-                </h2>
-                <p class="text-xs text-neutral-400 leading-relaxed">
-                    Silakan cek rangkuman kehadiran Anda di bawah ini. Data diperbarui secara *realtime* langsung oleh guru kelas saat absensi berlangsung di ruang kelas.
-                </p>
+            <div class="text-center mb-6 mt-2">
+                <h2 class="text-2xl font-black text-white tracking-tight">Silakan Cari Nama Kamu</h2>
+                <p class="text-neutral-400 text-xs mt-0.5">Pantau data rekapitulasi kehadiran mandiri Kelas VIII.</p>
             </div>
 
-            <div class="mb-5 flex justify-end">
-                <button onclick="bukaModalGridSiswa()" class="w-full sm:w-auto bg-neutral-900/80 hover:bg-neutral-800 text-orange-400 border border-neutral-800 hover:border-orange-500/40 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition-all flex items-center justify-center gap-2 shadow-lg">
-                    <i class="fa-solid fa-calendar-days"></i> Lihat Log Riwayat Matriks Bulanan
+            <div class="mb-4 bg-neutral-900/40 backdrop-blur-lg p-3 rounded-xl border border-neutral-800/60 shadow-lg flex justify-between items-center">
+                <span class="text-[11px] text-neutral-400 font-medium">Lihat absen satu kelas?</span>
+                <button onclick="bukaModalGridSiswa()" class="bg-neutral-800 hover:bg-neutral-700 text-orange-400 border border-neutral-700 font-bold px-3 py-1.5 rounded-lg text-[11px] cursor-pointer transition-colors">
+                    Buka Matriks Grid
                 </button>
             </div>
 
-            <div class="bg-neutral-900/40 backdrop-blur-lg rounded-2xl border border-neutral-800/60 shadow-lg overflow-hidden">
-                <div class="p-4 border-b border-neutral-800 bg-neutral-950/20">
-                    <h3 class="text-xs font-black text-white uppercase tracking-wider">Daftar Akumulasi Kehadiran Siswa</h3>
+            <div class="bg-neutral-900/40 backdrop-blur-lg p-4 rounded-2xl border border-neutral-800/60 shadow-lg text-left mb-5">
+                <div class="mb-3">
+                    <label class="block text-[10px] font-bold uppercase text-neutral-400 tracking-wider mb-1.5">Masukkan Nama Lengkap Siswa</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-500">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </span>
+                        <input type="text" id="input-pencarian-nama" onkeyup="lakukanPencarianSiswaOnline()" placeholder="Ketik nama kamu di sini..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl pl-9 pr-4 py-2.5 text-xs font-medium focus:outline-none focus:border-orange-500 text-white placeholder-neutral-600 transition-colors">
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto w-full">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-neutral-950/60 text-[10px] font-bold uppercase text-neutral-400 tracking-wider border-b border-neutral-800">
-                                <th class="p-3 text-center w-12">No</th>
-                                <th class="p-3">Nama Lengkap Murid</th>
-                                <th class="p-3 text-center bg-emerald-950/20 text-emerald-400 w-16">Hadir</th>
-                                <th class="p-3 text-center bg-amber-950/20 text-amber-400 w-16">Izin</th>
-                                <th class="p-3 text-center bg-sky-950/20 text-sky-400 w-16">Sakit</th>
-                                <th class="p-3 text-center bg-rose-950/20 text-rose-400 w-16">Alfa</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabel-siswa-mandiri" class="divide-y divide-neutral-800/60">
-                            <tr>
-                                <td colspan="6" class="p-6 text-center text-xs font-bold text-neutral-500">
-                                    <i class="fa-solid fa-spinner animate-spin text-orange-500 mr-1.5"></i> Menghubungkan ke cloud database...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="border-t border-neutral-800 pt-3 mt-1">
+                    <span class="block text-[9px] font-bold uppercase text-neutral-500 tracking-wider mb-2">Filter Rentang Tanggal (Opsional)</span>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><span class="text-[9px] font-medium text-neutral-500 block mb-1">Mulai:</span><input type="date" id="filter-tgl-mulai" onchange="lakukanPencarianSiswaOnline()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-2 py-1.5 text-xs text-white text-center focus:outline-none focus:border-orange-500"></div>
+                        <div><span class="text-[9px] font-medium text-neutral-500 block mb-1">Sampai:</span><input type="date" id="filter-tgl-sampai" onchange="lakukanPencarianSiswaOnline()" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-2 py-1.5 text-xs text-white text-center focus:outline-none focus:border-orange-500"></div>
+                    </div>
                 </div>
             </div>
+
+            <div id="container-hasil-pencarian" class="space-y-4 text-left">
+                <div class="text-center p-6 border border-dashed border-neutral-800 rounded-2xl bg-neutral-900/10 text-neutral-500 text-xs font-medium">
+                    Ketikkan namamu di kolom atas untuk memeriksa riwayat log real-time server kelas VIII.
+                </div>
+            </div>
+            
         </main>
 
         <footer class="bg-neutral-950/40 border-t border-neutral-900 py-3 text-center text-[10px] text-neutral-600 font-medium">
@@ -90,7 +86,7 @@
     <div id="modal-grid-siswa-full" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4" style="display: none;">
         <div class="bg-neutral-950 border border-neutral-800 w-full max-w-4xl rounded-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
             <div class="p-4 border-b border-neutral-800 flex justify-between items-center bg-neutral-900/60">
-                <h3 class="text-xs font-black text-white uppercase tracking-wide"><i class="fa-solid fa-grid-2 text-orange-400"></i> Matriks Kalender Kehadiran VIII</h3>
+                <h3 class="text-xs font-black text-white uppercase tracking-wide"><i class="fa-solid fa-calendar text-orange-400"></i> Matriks Kalender Kehadiran VIII</h3>
                 <button onclick="tutupModalGridSiswa()" class="text-neutral-400 hover:text-white font-black text-xl px-2 transition-colors">&times;</button>
             </div>
             <div class="p-4 overflow-auto flex-1 bg-neutral-950">
@@ -100,8 +96,8 @@
     </div>
 
     <script>
-        // ⚠️ PASTIKAN KUNCI CONFIG FIREBASE INI SAMA PERSIS DENGAN HALAMAN ABSENSI ANDA
-        const firebaseConfig = {
+        // ⚠️ MASUKKAN KONFIGURASI FIREBASE ASLI ANDA DI SINI
+       const firebaseConfig = {
   apiKey: "AIzaSyDkhMo6-T6aNuFpMaTliZgPZ2hF0lbkUXg",
   authDomain: "absen-siswa-e3046.firebaseapp.com",
   databaseURL: "https://absen-siswa-e3046-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -115,131 +111,116 @@
         const databaseCloud = firebase.database();
         const namaKelas = 'VIII';
 
-        // Penanganan Live Jam Digital Atas
+        // Live Jam Atas
         setInterval(() => {
             const skrg = new Date();
             document.getElementById('waktu-live').innerText = String(skrg.getHours()).padStart(2, '0') + ':' + String(skrg.getMinutes()).padStart(2, '0') + ' WIB';
         }, 1000);
 
-        // Helper Konversi Array Firebase Aman
         function amankanFormatFirebase(o) {
             if(!o) return [];
             return Array.isArray(o) ? o.filter(el => el !== null) : Object.values(o);
         }
 
-        // Ambil Data Realtime
-        databaseCloud.ref('sekolah/' + namaKelas).on('value', (snapshot) => {
-            const dataSiswa = amankanFormatFirebase(snapshot.val());
-            renderTabelUtamaSiswa(dataSiswa);
-        });
-
-        // 1. Render Tabel Utama (Akumulasi Angka)
-        function renderTabelUtamaSiswa(arr) {
-            const tbody = document.getElementById('tabel-siswa-mandiri');
-            if(arr.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-xs text-neutral-500">Belum ada data siswa di kelas ini.</td></tr>`;
-                return;
+        // Fungsi Pencarian Mengetik Nama Realtime
+        function lakukanPencarianSiswaOnline() {
+            const q = document.getElementById('input-pencarian-nama').value.trim().toLowerCase(); 
+            const container = document.getElementById('container-hasil-pencarian');
+            
+            // Jika kolom input kosong, bersihkan area hasil bawah
+            if(q.length === 0) { 
+                container.innerHTML = `<div class="text-center p-6 border border-dashed border-neutral-800 rounded-2xl bg-neutral-900/10 text-neutral-500 text-xs font-medium">Ketikkan namamu di kolom atas untuk memeriksa log real-time server kelas VIII.</div>`; 
+                return; 
             }
-
-            let htmlStr = "";
-            arr.forEach((s, idx) => {
-                if(!s) return;
+            
+            databaseCloud.ref('sekolah/' + namaKelas).once('value').then((snap) => {
+                let sArr = amankanFormatFirebase(snap.val()); 
+                // Memfilter nama berdasarkan huruf yang diketikkan user
+                let res = sArr.filter(x => x && x.nama && x.nama.toLowerCase().includes(q));
                 
-                // Menghitung ulang secara realtime dari riwayat internal objek siswa
-                let totalHadir = 0, totalIzin = 0, totalSakit = 0, totalAlfa = 0;
-                if(s.riwayat) {
-                    Object.values(s.riwayat).forEach(status => {
-                        if(status === "H") totalHadir++;
-                        else if(status === "I") totalIzin++;
-                        else if(status === "S") totalSakit++;
-                        else if(status === "A") totalAlfa++;
-                    });
+                if(res.length === 0) { 
+                    container.innerHTML = `<div class="text-center text-xs font-bold text-rose-400 p-6 bg-neutral-900/50 border border-neutral-800 rounded-2xl">Nama siswa "${document.getElementById('input-pencarian-nama').value}" tidak ditemukan.</div>`; 
+                    return; 
                 }
-
-                htmlStr += `
-                <tr class="hover:bg-neutral-900/30 text-xs transition-colors duration-150">
-                    <td class="p-3 text-center text-neutral-500 font-bold">${idx + 1}</td>
-                    <td class="p-3 font-bold text-white">${s.nama}</td>
-                    <td class="p-3 text-center font-black text-emerald-400 bg-emerald-950/10">${totalHadir}</td>
-                    <td class="p-3 text-center font-black text-amber-400 bg-amber-950/10">${totalIzin}</td>
-                    <td class="p-3 text-center font-black text-sky-400 bg-sky-950/10">${totalSakit}</td>
-                    <td class="p-3 text-center font-black text-rose-400 bg-rose-950/10">${totalAlfa}</td>
-                </tr>`;
+                
+                let h = ""; 
+                let bM = document.getElementById('filter-tgl-mulai').value ? new Date(document.getElementById('filter-tgl-mulai').value) : null; 
+                let bS = document.getElementById('filter-tgl-sampai').value ? new Date(document.getElementById('filter-tgl-sampai').value) : null;
+                
+                res.forEach(s => {
+                    let hB=0, iB=0, sB=0, aB=0; 
+                    let rHtml = ""; 
+                    if(s.riwayat) { 
+                        Object.keys(s.riwayat).sort().forEach(tkStr => { 
+                            let p = tkStr.split("-"); 
+                            let tObj = new Date(p[0], p[1]-1, p[2]); 
+                            if(bM && tObj < bM) return; 
+                            if(bS && tObj > bS) return; 
+                            
+                            let st = s.riwayat[tkStr]; 
+                            if(st==="H") hB++; else if(st==="I") iB++; else if(st==="S") sB++; else if(st==="A") aB++; 
+                            let badge = st==="H"?"bg-emerald-950/40 border border-emerald-800 text-emerald-400":st==="I"?"bg-amber-950/40 border border-amber-800 text-amber-400":st==="S"?"bg-sky-950/40 border border-sky-800 text-sky-400":"bg-rose-950/40 border border-rose-800 text-rose-400"; 
+                            rHtml += `<div class="flex justify-between items-center py-2 text-[11px] font-semibold border-b border-neutral-800/40 last:border-0"><span>${p[2]}/${p[1]}</span><span class="px-2 py-0.5 rounded font-black ${badge}">${st}</span></div>`; 
+                        }); 
+                    }
+                    let tot = hB+iB+sB+aB; 
+                    let rasio = tot > 0 ? Math.round((hB/tot)*100) : 0;
+                    
+                    // Render kartu riwayat personal siswa
+                    h += `
+                    <div class="bg-neutral-900/40 border border-neutral-800 rounded-2xl p-4 shadow-lg">
+                        <div class="flex justify-between items-center border-b border-neutral-800 pb-2 mb-2">
+                            <div><h4 class="text-sm font-black text-white">${s.nama}</h4></div>
+                            <div class="text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/40 px-2 py-0.5 rounded">${rasio}% Hadir</div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center text-[10px] font-bold mb-3">
+                            <div class="bg-emerald-950/20 p-1 rounded border border-emerald-900/40 text-emerald-400">${hB} H</div>
+                            <div class="bg-amber-950/20 p-1 rounded border border-amber-900/40 text-amber-400">${iB} I</div>
+                            <div class="bg-sky-950/20 p-1 rounded border border-sky-900/40 text-sky-400">${sB} S</div>
+                            <div class="bg-rose-950/20 p-1 rounded border border-rose-900/40 text-rose-400">${aB} A</div>
+                        </div>
+                        <div class="bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 max-h-[150px] overflow-auto divide-y divide-neutral-800/60">
+                            ${rHtml || '<p class="text-center text-[10px] text-neutral-600">Belum ada rekaman log absen.</p>'}
+                        </div>
+                    </div>`;
+                }); 
+                container.innerHTML = h;
             });
-            tbody.innerHTML = htmlStr;
         }
 
-        // 2. Render Modal Matriks Grid Bulanan (Sinkronisasi Tanggal ISO)
+        // Pembuatan Tabel Grid Bulanan untuk Satu Kelas (Modal)
         function bukaModalGridSiswa() {
             document.getElementById('modal-grid-siswa-full').style.display = "flex";
-            
             databaseCloud.ref('sekolah/' + namaKelas).once('value').then((snapshot) => {
-                const arr = amankanFormatFirebase(snapshot.val());
+                let siswa = amankanFormatFirebase(snapshot.val()); let listTanggal = []; 
+                siswa.forEach(s => { if(s && s.riwayat) Object.keys(s.riwayat).forEach(t => { if(!listTanggal.includes(t)) listTanggal.push(t); }); }); 
+                listTanggal.sort(); if(listTanggal.length===0) listTanggal.push("2026-01-01");
                 
-                // Kumpulkan semua tanggal unik yang pernah di-absen secara terurut
-                let kumpulanTanggal = [];
-                arr.forEach(s => {
-                    if(s && s.riwayat) {
-                        Object.keys(s.riwayat).forEach(tgl => {
-                            if(!kumpulanTanggal.includes(tgl)) kumpulanTanggal.push(tgl);
-                        });
-                    }
-                });
-                kumpulanTanggal.sort(); // Urutkan tanggal dari terlama ke terbaru
-
-                // Jika database riwayat masih kosong total, berikan kolom tanggal hari ini secara default
-                if(kumpulanTanggal.length === 0) {
-                    const tglHariIni = new Date();
-                    kumpulanTanggal.push(tglHariIni.getFullYear() + '-' + String(tglHariIni.getMonth() + 1).padStart(2, '0') + '-' + String(tglHariIni.getDate()).padStart(2, '0'));
-                }
-
-                // Bangun struktur baris tabel HTML komponen matriks grid
-                let t = `<table class="w-full text-[10px] border-collapse"><thead class="bg-neutral-950 text-neutral-400 font-bold"><tr><th class="p-2 border border-neutral-800 text-center">No</th><th class="p-2 border border-neutral-800 min-w-[120px]">Nama Lengkap</th>`;
+                let r = `<table class="w-full text-[10px] border-collapse text-left"><thead class="bg-neutral-950 text-neutral-400 font-bold"><tr><th class="p-2 border border-neutral-800 text-center">No</th><th class="p-2 border border-neutral-800 min-w-[100px]">Nama Lengkap</th>`;
+                listTanggal.forEach(t => { r += `<th class="p-2 text-center border border-neutral-800">${t.split("-")[2]}/${t.split("-")[1]}</th>`; }); 
+                r += `<th class="p-2 border border-neutral-800 text-emerald-400">H</th><th class="p-2 border border-neutral-800 text-amber-400">I</th><th class="p-2 border border-neutral-800 text-sky-400">S</th><th class="p-2 border border-neutral-800 text-rose-400">A</th></tr></thead><tbody>`;
                 
-                // Tambah Header Kolom Tanggal (Format tampilan: DD/MM)
-                kumpulanTanggal.forEach(tgl => {
-                    let part = tgl.split("-");
-                    t += `<th class="p-2 border border-neutral-800 text-center bg-neutral-900">${part[2]}/${part[1]}</th>`;
-                });
-                t += `<th class="p-2 border border-neutral-800 text-emerald-400 text-center bg-neutral-900">H</th><th class="p-2 border border-neutral-800 text-amber-400 text-center bg-neutral-900">I</th><th class="p-2 border border-neutral-800 text-sky-400 text-center bg-neutral-900">S</th><th class="p-2 border border-neutral-800 text-rose-400 text-center bg-neutral-900">A</th></tr></thead><tbody>`;
-
-                // Isi baris data tiap-tiap siswa
-                arr.forEach((s, idx) => {
+                siswa.forEach((s, i) => {
                     if(!s) return;
-                    t += `<tr class="hover:bg-neutral-900/60 border-b border-neutral-800/80 text-neutral-300"><td class="p-2 text-center bg-neutral-950/40 text-neutral-500 border-r border-neutral-800">${idx + 1}</td><td class="p-2 font-bold text-white border-r border-neutral-800">${s.nama}</td>`;
-                    
-                    let hB = 0, iB = 0, sB = 0, aB = 0;
-                    
-                    kumpulanTanggal.forEach(tgl => {
-                        let statusAman = (s.riwayat && s.riwayat[tgl]) ? s.riwayat[tgl] : "-";
-                        
-                        if(statusAman === "H") hB++;
-                        else if(statusAman === "I") iB++;
-                        else if(statusAman === "S") sB++;
-                        else if(statusAman === "A") aB++;
-
-                        let warnaSinyal = statusAman === "H" ? "text-emerald-400 font-black" : statusAman === "I" ? "text-amber-400 font-black" : statusAman === "S" ? "text-sky-400 font-black" : statusAman === "A" ? "text-rose-400 font-black" : "text-neutral-600";
-                        t += `<td class="p-2 text-center font-bold border-r border-neutral-800 ${warnaSinyal}">${statusAman}</td>`;
+                    r += `<tr class="hover:bg-neutral-900/60 border-b border-neutral-800 text-neutral-300"><td class="p-2 text-center bg-neutral-950/40 text-neutral-500 border-r border-neutral-800">${i+1}</td><td class="p-2 font-bold text-white border-r border-neutral-800">${s.nama}</td>`; let hB=0, iB=0, sB=0, aB=0;
+                    listTanggal.forEach(t => { 
+                        let sim = (s.riwayat && s.riwayat[t]) ? s.riwayat[t] : "-"; 
+                        if (sim === "H") hB++; else if (sim === "I") iB++; else if (sim === "S") sB++; else if (sim === "A") aB++; 
+                        let c = sim==="H"?"text-emerald-400 font-black":sim==="I"?"text-amber-400 font-black":sim==="S"?"text-sky-400 font-black":sim==="A"?"text-rose-400 font-black":"text-neutral-600"; 
+                        r += `<td class="p-2 text-center font-bold border-r border-neutral-800 ${c}">${sim}</td>`; 
                     });
-
-                    t += `<td class="p-2 text-center text-emerald-400 bg-emerald-950/10 font-black border-r border-neutral-800">${hB}</td><td class="p-2 text-center text-amber-400 bg-amber-950/10 font-black border-r border-neutral-800">${iB}</td><td class="p-2 text-center text-sky-400 bg-sky-950/10 font-black border-r border-neutral-800">${sB}</td><td class="p-2 text-center text-rose-400 bg-rose-950/10 font-black">${aB}</td></tr>`;
-                });
-
-                document.getElementById('tempat-tabel-grid-siswa').innerHTML = t + "</tbody></table>";
+                    r += `<td class="p-2 border border-neutral-800 text-emerald-400 bg-emerald-950/20 text-center font-black border-r border-neutral-800">${hB}</td><td class="p-2 border border-neutral-800 text-amber-400 bg-amber-950/20 text-center font-black border-r border-neutral-800">${iB}</td><td class="p-2 border border-neutral-800 text-sky-400 bg-sky-950/20 text-center font-black border-r border-neutral-800">${sB}</td><td class="p-2 border border-neutral-800 text-rose-400 bg-rose-950/20 text-center font-black">${aB}</td></tr>`;
+                }); document.getElementById('tempat-tabel-grid-siswa').innerHTML = r + "</tbody></table>";
             });
         }
+        
+        function tutupModalGridSiswa() { document.getElementById('modal-grid-siswa-full').style.display = "none"; }
 
-        function tutupModalGridSiswa() { 
-            document.getElementById('modal-grid-siswa-full').style.display = "none"; 
-        }
-
-        // Efek Dekoratif Animasi Canvas Latar Belakang (Tema Gelap Orange)
+        // Animasi Partikel Latar Belakang Canvas
         const canvas = document.getElementById('canvas-animasi'); const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        let bolls = []; for(let i=0; i<6; i++) { bolls.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, dx: (Math.random() - 0.5) * 0.15, dy: (Math.random() - 0.5) * 0.15, r: Math.random() * 8 + 4 }); }
-        function play() { ctx.clearRect(0, 0, canvas.width, canvas.height); bolls.forEach(b => { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(249, 115, 22, 0.02)'; ctx.fill(); b.x += b.dx; b.y += b.dy; if(b.x+b.r > canvas.width || b.x-b.r < 0) b.dx = -b.dx; if(b.y+b.r > canvas.height || b.y-b.r < 0) b.dy = -b.dy; }); requestAnimationFrame(play); }
-        play();
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } window.addEventListener('resize', resize); resize();
+        let bolls = []; for(let i=0; i<6; i++) { bolls.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, dx: (Math.random() - 0.5) * 0.2, dy: (Math.random() - 0.5) * 0.2, r: Math.random() * 10 + 5 }); }
+        function play() { ctx.clearRect(0, 0, canvas.width, canvas.height); bolls.forEach(b => { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(249, 115, 22, 0.03)'; ctx.fill(); b.x += b.dx; b.y += b.dy; if(b.x+b.r > canvas.width || b.x-b.r < 0) b.dx = -b.dx; if(b.y+b.r > canvas.height || b.y-b.r < 0) b.dy = -b.dy; }); requestAnimationFrame(play); } play();
     </script>
 </body>
 </html>
