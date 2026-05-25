@@ -47,7 +47,7 @@
 
             <div class="mb-5 bg-neutral-900/40 backdrop-blur-lg p-4 rounded-2xl border border-neutral-800/60 shadow-lg max-w-lg mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-left">
                 <div>
-                    <h3 class="text-xs font-bold text-white">Rekap Kehadiran Kelas VIII</h3>
+                    <h3 class="text-xs font-bold text-white">Matriks Sebaran Kelas VIII</h3>
                 </div>
                 <button onclick="bukaModalGridSiswa()" class="w-full sm:w-auto bg-neutral-800 hover:bg-neutral-700 text-orange-300 border border-neutral-700 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer transition-colors">Lihat Grid Bulanan</button>
             </div>
@@ -77,7 +77,7 @@
     <div id="modal-grid-siswa-full" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-6" style="display: none;">
         <div class="bg-neutral-950 border border-neutral-800 w-full max-w-4xl rounded-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-neutral-200">
             <div class="p-4 border-b border-neutral-800 flex justify-between items-center bg-neutral-900">
-                <h3 class="text-xs font-black text-white uppercase">Rekap Kehadiran Kelas VIII</h3>
+                <h3 class="text-xs font-black text-white uppercase">Matriks Kehadiran Kelas VIII</h3>
                 <button onclick="tutupModalGridSiswa()" class="text-neutral-500 hover:text-white font-black text-xl px-2">&times;</button>
             </div>
             <div class="p-4 overflow-auto flex-1"><div class="overflow-x-auto border border-neutral-800 rounded-xl bg-neutral-900/20" id="tempat-tabel-grid-siswa"></div></div>
@@ -86,7 +86,7 @@
 
     <script>
         // ⚠️ MASUKKAN KONFIGURASI FIREBASE ASLI ANDA DI SINI
-       const firebaseConfig = {
+        const firebaseConfig = {
   apiKey: "AIzaSyDkhMo6-T6aNuFpMaTliZgPZ2hF0lbkUXg",
   authDomain: "absen-siswa-e3046.firebaseapp.com",
   databaseURL: "https://absen-siswa-e3046-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -94,7 +94,6 @@
   storageBucket: "absen-siswa-e3046.firebasestorage.app",
   messagingSenderId: "474422770496",
   appId: "1:474422770496:web:473cdfc1005de347a898a5"
-};
         };
         
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
