@@ -226,16 +226,62 @@
         }
 
         function prosesTambahMassalExcel() { 
-            const val = document.getElementById('textarea-excel').value.trim(); 
-            if(!val) return; 
-            let baris = val.split("\n"); 
-            let dBaru = [...perubahanSiswaLokal]; 
-            baris.forEach(b => { 
-                let n = b.replace(/\r/g, "").trim(); 
-                if(n) dBaru.push({ nama: n, hadir:0, izin:0, sakit:0, alfa:0, riwayat:{} }); 
+            function prosesTambahMassalExcel() { 
+    const val = document.getElementById('textarea-excel').value.trim(); 
+    if(!val) {
+        alert("Silakan paste data nama dari Excel terlebih dahulu!");
+        return;
+    }
+    
+    let baris = val.split("\n"); 
+    
+    // Memastikan penampung data awal berupa array murni yang aman
+    let dBaru = [];
+    if (perubahanSiswaLokal && cambiosFormatAman(perubahanSiswaLokal)) {
+        dBaru = [...perubahanSiswaLokal];
+    } else if (Array.isArray(perubahanSiswaLokal)) {
+        dBaru = perubahanSiswaLokal.filter(el => el !== null);
+    } else if (perubahanSiswaLokal && typeof perubahanSiswaLokal === 'object') {
+        dBaru = Object.values(perubahanSiswaLokal);
+    }
+
+    let jumlahSuntik = 0;
+    baris.forEach(b => { 
+        let n = b.replace(/\r/g, "").trim(); 
+        if(n.length > 0) { 
+            dBaru.push({ 
+                nama: n, 
+                hadir: 0, 
+                izin: 0, 
+                sakit: 0, 
+                alfa: 0, 
+                riwayat: {} 
             }); 
-            databaseCloud.ref('sekolah/' + namaKelas).set(dBaru).then(() => document.getElementById('textarea-excel').value = ""); 
-        }
+            jumlahSuntik++;
+        } 
+    }); 
+
+    if (jumlahSuntik === 0) {
+        alert("Tidak ada nama valid yang ditemukan untuk disuntik.");
+        return;
+    }
+
+    // Mengirimkan data gabungan terbaru langsung ke laci /sekolah/VIII di Firebase
+    databaseCloud.ref('sekolah/' + namaKelas).set(dBaru)
+    .then(() => { 
+        document.getElementById('textarea-excel').value = ""; 
+        alert("Berhasil mengunggah " + jumlahSuntik + " siswa baru ke Kelas VIII!");
+    })
+    .catch((error) => {
+        console.error("Gagal menyimpan ke Firebase:", error);
+        alert("Gagal mengunggah! Periksa koneksi internet atau Rules Firebase Anda.");
+    });
+}
+
+// Fungsi pembantu internal tambahan untuk validasi tipe array
+function cambiosFormatAman(item) {
+    return (typeof item === "object" && item !== null && 'length' in item);
+}
         
         function hapusSiswaTunggal(i) { if(confirm("Hapus siswa ini?")) { perubahanSiswaLokal.splice(i,1); databaseCloud.ref('sekolah/' + namaKelas).set(perubahanSiswaLokal); } }
         function bersihkanSemuaSiswa() { if(confirm("Kosongkan satu kelas?")) databaseCloud.ref('sekolah/' + namaKelas).set([]); }
