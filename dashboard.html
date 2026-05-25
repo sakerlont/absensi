@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Guru - Kelas Ust. Tubagus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html { 
+            margin: 0; padding: 0; overflow: hidden; height: 100%; 
+            background: linear-gradient(135deg, #f1f5f3 0%, #e3ede7 50%, #f7f3ed 100%);
+        }
+        #canvas-animasi { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; }
+        .konten-utama { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; }
+        .fade-smooth { animation: fadeSmooth 1s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes fadeSmooth { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-700">
+
+    <canvas id="canvas-animasi"></canvas>
+
+    <div class="konten-utama">
+        <header class="bg-white/50 backdrop-blur-lg border-b border-slate-100 py-3 px-6 shadow-xs fade-smooth">
+            <div class="max-w-4xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-base font-bold"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div>
+                        <h1 class="text-xs font-black tracking-wider text-slate-700 uppercase">PANEL UTAMA GURU</h1>
+                    </div>
+                </div>
+                <a href="index.html" class="px-3 py-1.5 border border-rose-100 bg-rose-50/60 hover:bg-rose-50 text-rose-600 font-bold text-xs rounded-xl transition-all flex items-center gap-1">Keluar</a>
+            </div>
+        </header>
+
+        <main class="max-w-3xl mx-auto p-6 w-full my-auto fade-smooth" style="animation-delay: 0.1s;">
+            <div class="text-center mb-10">
+                <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full border border-emerald-100/70">Mode Manajemen Pengajar</span>
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight mt-2.5">Pilih Kelompok Kelas</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-xl mx-auto">
+                <button onclick="pilihKelasDanBuka('X')" class="group bg-white/60 backdrop-blur-lg border border-slate-100 p-5 rounded-2xl flex flex-col items-center justify-center gap-1.5 hover:border-emerald-300 hover:bg-white/90 shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-xs font-black">X</div>
+                    <span class="font-bold text-xs text-slate-700">Kelas X</span>
+                </button>
+
+                <button onclick="pilihKelasDanBuka('XI')" class="group bg-white/60 backdrop-blur-lg border border-slate-100 p-5 rounded-2xl flex flex-col items-center justify-center gap-1.5 hover:border-orange-300 hover:bg-white/90 shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer">
+                    <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-lg flex items-center justify-center text-xs font-black">XI</div>
+                    <span class="font-bold text-xs text-slate-700">Kelas XI</span>
+                </button>
+
+                <button onclick="pilihKelasDanBuka('XII')" class="group bg-white/60 backdrop-blur-lg border border-slate-100 p-5 rounded-2xl flex flex-col items-center justify-center gap-1.5 hover:border-rose-300 hover:bg-white/90 shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer">
+                    <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center text-xs font-black">XII</div>
+                    <span class="font-bold text-xs text-slate-700">Kelas XII</span>
+                </button>
+            </div>
+        </main>
+
+        <footer class="py-4 text-center text-[11px] font-bold text-slate-300">
+            &copy; 2026 E-Absensi Kelas Ust. Tubagus.
+        </footer>
+    </div>
+
+    <script>
+        function pilihKelasDanBuka(n) { localStorage.setItem('targetKelasPengajar', n); window.location.href = "absensi.html"; }
+        const canvas = document.getElementById('canvas-animasi'); const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        let bolls = []; for(let i=0; i<8; i++) { bolls.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, dx: (Math.random() - 0.5) * 0.3, dy: (Math.random() - 0.5) * 0.3, r: Math.random() * 20 + 10 }); }
+        function play() { ctx.clearRect(0, 0, canvas.width, canvas.height); bolls.forEach(b => { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(167, 243, 208, 0.08)'; ctx.fill(); b.x += b.dx; b.y += b.dy; if(b.x+b.r > canvas.width || b.x-b.r < 0) b.dx = -b.dx; if(b.y+b.r > canvas.height || b.y-b.r < 0) b.dy = -b.dy; }); requestAnimationFrame(play); }
+        play();
+    </script>
+</body>
+</html>

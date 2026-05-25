@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Absensi Online - Kelas Ust. Tubagus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        body, html { 
+            margin: 0; padding: 0; min-height: 100%; 
+            background: linear-gradient(135deg, #f1f5f3 0%, #e3ede7 50%, #f7f3ed 100%);
+            background-attachment: fixed;
+        }
+        #canvas-animasi { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+        .konten-wrapper { position: relative; z-index: 1; }
+
+        .btn-absensi input[type="radio"] { display: none; }
+        .btn-absensi label {
+            cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 0.5rem;
+            border: 1px solid #e2e8f0; background-color: #fafafa; color: #94a3b8; transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1); min-width: 48px;
+        }
+        .label-hadir:hover { border-color: #a7f3d0; color: #059669; background-color: #f0fdf4; }
+        .btn-absensi input[value="Hadir"]:checked + .label-hadir { background-color: #10b981; border-color: #10b981; color: white; transform: scale(1.03); }
+        
+        .label-izin:hover { border-color: #fde68a; color: #d97706; background-color: #fffbeb; }
+        .btn-absensi input[value="Izin"]:checked + .label-izin { background-color: #f59e0b; border-color: #f59e0b; color: white; transform: scale(1.03); }
+        
+        .label-sakit:hover { border-color: #bae6fd; color: #0284c7; background-color: #f0f9ff; }
+        .btn-absensi input[value="Sakit"]:checked + .label-sakit { background-color: #0ea5e9; border-color: #0ea5e9; color: white; transform: scale(1.03); }
+        
+        .label-alfa:hover { border-color: #fecdd3; color: #e11d48; background-color: #fff1f2; }
+        .btn-absensi input[value="Alfa"]:checked + .label-alfa { background-color: #f43f5e; border-color: #f43f5e; color: white; transform: scale(1.03); }
+        
+        .fade-smooth { animation: fadeSmooth 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes fadeSmooth { from { opacity: 0; transform: scale(0.99); } to { opacity: 1; transform: scale(1); } }
+        @media print { .no-print { display: none !important; } }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-700">
+
+    <canvas id="canvas-animasi"></canvas>
+
+    <div class="konten-wrapper">
+        <header class="bg-white/50 backdrop-blur-lg border-b border-slate-100 py-3 px-6 sticky top-0 z-50 shadow-2xs no-print">
+            <div class="max-w-4xl mx-auto flex justify-between items-center">
+                <a href="dashboard.html" class="text-slate-400 hover:text-emerald-600 text-xs font-bold flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-chevron-left text-[9px]"></i> Kembali
+                </a>
+                <h1 class="text-xs font-black text-slate-800 uppercase tracking-wide">Panel Guru: <span id="judul-kelas" class="text-emerald-600">...</span></h1>
+                <div class="text-[10px] text-slate-400 font-bold" id="tanggal-hari-ini"></div>
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto p-4 md:p-6 fade-smooth">
+            <div id="notif-sukses" style="display: none;" class="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold p-3 rounded-xl flex items-center gap-2 animate-bounce">
+                <i class="fa-solid fa-circle-check text-emerald-500"></i> Absensi hari ini berhasil disimpan!
+            </div>
+
+            <div class="mb-5 bg-white/60 backdrop-blur-lg p-4 rounded-2xl border border-slate-100/70 shadow-2xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-table-cells text-emerald-500"></i> Jurnal Rekap Grid Bulanan</h3>
+                </div>
+                <button onclick="bukaModalGrid()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer transition-colors">Lihat Jurnal Grid</button>
+            </div>
+
+            <div class="mb-5 bg-white/60 backdrop-blur-lg p-4 rounded-2xl border border-slate-100/70 shadow-2xs">
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="bg-emerald-50/50 rounded-xl p-2.5 text-center border border-emerald-100/60"><span class="text-[9px] font-bold text-emerald-600 block">Hadir</span><span id="rekap-hadir" class="text-xl font-black text-emerald-700 block mt-0.5">0</span></div>
+                    <div class="bg-amber-50/50 rounded-xl p-2.5 text-center border border-amber-100/60"><span class="text-[9px] font-bold text-amber-600 block">Izin</span><span id="rekap-izin" class="text-xl font-black text-amber-600 block mt-0.5">0</span></div>
+                    <div class="bg-sky-50/50 rounded-xl p-2.5 text-center border border-sky-100/60"><span class="text-[9px] font-bold text-sky-600 block">Sakit</span><span id="rekap-sakit" class="text-xl font-black text-sky-700 block mt-0.5">0</span></div>
+                    <div class="bg-rose-50/50 rounded-xl p-2.5 text-center border border-rose-100/60"><span class="text-[9px] font-bold text-rose-600 block">Alfa</span><span id="rekap-alfa" class="text-xl font-black text-rose-700 block mt-0.5">0</span></div>
+                </div>
+            </div>
+
+            <div class="mb-5 bg-white/60 backdrop-blur-lg p-4 rounded-2xl border border-slate-100/70 shadow-2xs no-print">
+                <textarea id="textarea-excel" rows="2" placeholder="Paste data kolom nama dari Excel di sini..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-emerald-400 text-slate-700 placeholder-slate-400"></textarea>
+                <div class="flex justify-between items-center mt-2.5">
+                    <button type="button" onclick="bersihkanSemuaSiswa()" class="text-[11px] text-rose-500 font-bold cursor-pointer"><i class="fa-solid fa-trash"></i> Kosongkan</button>
+                    <button type="button" onclick="prosesTambahMassalExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-xl text-xs cursor-pointer shadow-2xs transition-colors">Suntik Nama</button>
+                </div>
+            </div>
+
+            <div class="bg-white/60 backdrop-blur-lg rounded-2xl border border-slate-100/70 shadow-2xs overflow-hidden">
+                <div class="p-4 border-b border-slate-100 flex justify-between items-center no-print">
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-wider">Lembar Kehadiran</h2>
+                    <div class="flex gap-2">
+                        <button onclick="unduhRekapExcel()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer transition-colors">CSV</button>
+                        <button onclick="simpanAbsensiKeCloud()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors">Simpan Cloud</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/50 text-[10px] font-bold uppercase text-slate-400 tracking-wider border-b border-slate-100">
+                                <th class="p-3 text-center w-12">No</th>
+                                <th class="p-3">Nama Lengkap Murid</th>
+                                <th class="p-3 text-center w-60 no-print">Status</th>
+                                <th class="p-3 text-center w-12 no-print">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-murid-body" class="divide-y divide-slate-100">
+                            <tr>
+                                <td colspan="4" class="p-6 text-center text-xs font-bold text-slate-400"><i class="fa-solid fa-spinner animate-spin text-emerald-500 mr-1.5"></i> Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-grid-bulanan" class="fixed inset-0 z-50 bg-slate-900/10 backdrop-blur-sm flex items-center justify-center p-2 sm:p-6" style="display: none;">
+        <div class="bg-white border border-slate-100 w-full max-w-4xl rounded-2xl max-h-[85vh] flex flex-col shadow-xl overflow-hidden text-slate-700 animate-fade">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="text-xs font-black text-slate-800 uppercase">Matriks Kehadiran</h3>
+                <button onclick="tutupModalGrid()" class="text-slate-400 hover:text-slate-600 font-black text-lg px-2">&times;</button>
+            </div>
+            <div class="p-4 overflow-auto flex-1">
+                <div class="overflow-x-auto border border-slate-100 rounded-xl" id="container-tabel-grid-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSy...", authDomain: "YOUR-PROJECT.firebaseapp.com", databaseURL: "https://YOUR-PROJECT-default-rtdb.firebaseio.com", projectId: "YOUR-PROJECT" };
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+        const databaseCloud = firebase.database(); const namaKelas = localStorage.getItem('targetKelasPengajar') || 'X';
+        document.getElementById('judul-kelas').innerText = "Kelas " + namaKelas;
+
+        const tglSekarang = new Date();
+        document.getElementById('tanggal-hari-ini').innerText = tglSekarang.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' });
+
+        function amankanFormatFirebase(o) { return o ? Object.values(o) : []; }
+        const tglKeyHariIni = tglSekarang.getFullYear() + '-' + String(tglSekarang.getMonth() + 1).padStart(2, '0') + '-' + String(tglSekarang.getDate()).padStart(2, '0');
+
+        databaseCloud.ref('sekolah/' + namaKelas).on('value', (s) => { let list = amankanFormatFirebase(s.val()); renderTabelMurid(list); hitungUlangPersentaseHariIni(list); });
+
+        function renderTabelMurid(arr) {
+            const tbody = document.getElementById('tabel-murid-body'); if (arr.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-xs text-slate-400">Kosong.</td></tr>`; return; }
+            let h = "";
+            arr.forEach((s, idx) => {
+                let riwayat = (s.riwayat && s.riwayat[tglKeyHariIni]) ? s.riwayat[tglKeyHariIni] : "";
+                h += `
+                <tr class="hover:bg-slate-50/40 text-xs transition-colors duration-150">
+                    <td class="p-3 text-center text-slate-400 font-bold">${idx + 1}</td>
+                    <td class="p-3 font-bold text-slate-700">${s.nama}</td>
+                    <td class="p-3 no-print">
+                        <div class="flex justify-center gap-1">
+                            <div class="btn-absensi"><input type="radio" id="h-${idx}" name="absen-${idx}" value="Hadir" onchange="catatLokalStatus(${idx}, 'H')" ${riwayat === 'H' ? 'checked' : ''}><label for="h-${idx}" class="label-hadir">H</label></div>
+                            <div class="btn-absensi"><input type="radio" id="i-${idx}" name="absen-${idx}" value="Izin" onchange="catatLokalStatus(${idx}, 'I')" ${riwayat === 'I' ? 'checked' : ''}><label for="i-${idx}" class="label-izin">I</label></div>
+                            <div class="btn-absensi"><input type="radio" id="s-${idx}" name="absen-${idx}" value="Sakit" onchange="catatLokalStatus(${idx}, 'S')" ${riwayat === 'S' ? 'checked' : ''}><label for="s-${idx}" class="label-sakit">S</label></div>
+                            <div class="btn-absensi"><input type="radio" id="a-${idx}" name="absen-${idx}" value="Alfa" onchange="catatLokalStatus(${idx}, 'A')" ${riwayat === 'A' ? 'checked' : ''}><label for="a-${idx}" class="label-alfa">A</label></div>
+                        </div>
+                    </td>
+                    <td class="p-3 text-center no-print"><button onclick="hapusSiswaTunggal(${idx})" class="text-slate-300 hover:text-rose-500 cursor-pointer"><i class="fa-solid fa-minus-circle"></i></button></td>
+                </tr>`;
+            });
+            tbody.innerHTML = h;
+        }
+
+        let perubahanSiswaLokal = []; databaseCloud.ref('sekolah/' + namaKelas).on('value', (s) => { perubahanSiswaLokal = amankanFormatFirebase(s.val()); });
+        function catatLokalStatus(idx, k) { if(!perubahanSiswaLokal[idx].riwayat) perubahanSiswaLokal[idx].riwayat = {}; perubahanSiswaLokal[idx].riwayat[tglKeyHariIni] = k; hitungUlangPersentaseHariIni(perubahanSiswaLokal); }
+        
+        function hitungUlangPersentaseHariIni(arr) {
+            let h=0, i=0, s=0, a=0; arr.forEach(x => { let st = (x.riwayat && x.riwayat[tglKeyHariIni]) ? x.riwayat[tglKeyHariIni] : ""; if(st==="H") h++; else if(st==="I") i++; else if(st==="S") s++; else if(st==="A") a++; });
+            document.getElementById('rekap-hadir').innerText = h; document.getElementById('rekap-izin').innerText = i; document.getElementById('rekap-sakit').innerText = s; document.getElementById('rekap-alfa').innerText = a;
+        }
+
+        function simpanAbsensiKeCloud() {
+            perubahanSiswaLokal.forEach(x => { let th=0, ti=0, ts=0, ta=0; if(x.riwayat) { Object.values(x.riwayat).forEach(v => { if(v==="H") th++; else if(v==="I") ti++; else if(v==="S") ts++; else if(v==="A") ta++; }); } x.hadir = th; x.izin = ti; x.sakit = ts; x.alfa = ta; });
+            databaseCloud.ref('sekolah/' + namaKelas).set(perubahanSiswaLokal).then(() => { const n = document.getElementById('notif-sukses'); n.style.display="flex"; setTimeout(() => n.style.display="none", 2500); });
+        }
+
+        function prosesTambahMassalExcel() { const val = document.getElementById('textarea-excel').value.trim(); if(!val) return; let baris = val.split("\n"); let dBaru = [...perubahanSiswaLokal]; baris.forEach(b => { let n = b.replace(/\r/g, "").trim(); if(n) dBaru.push({ nama: n, hadir:0, izin:0, sakit:0, alfa:0, riwayat:{} }); }); databaseCloud.ref('sekolah/' + namaKelas).set(dBaru).then(() => document.getElementById('textarea-excel').value = ""); }
+        function hapusSiswaTunggal(i) { if(confirm("Hapus?")) { perubahanSiswaLokal.splice(i,1); databaseCloud.ref('sekolah/' + namaKelas).set(perubahanSiswaLokal); } }
+        function bersihkanSemuaSiswa() { if(confirm("Kosongkan?")) databaseCloud.ref('sekolah/' + namaKelas).set([]); }
+        
+        function unduhRekapExcel() { let csv = ["No,Nama Lengkap Murid,Total Hadir,Total Izin,Total Sakit,Total Alfa"]; perubahanSiswaLokal.forEach((s, i) => csv.push(`"${i+1}","${s.nama}","${s.hadir||0}","${s.izin||0}","${s.sakit||0}","${s.alfa||0}"`)); const b = new Blob([csv.join("\n")], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(b); link.setAttribute("download", `Rekap_${namaKelas}.csv`); link.click(); }
+
+        function bukaModalGrid() {
+            document.getElementById('modal-grid-bulanan').style.display = "flex";
+            let listTanggal = []; perubahanSiswaLokal.forEach(s => { if(s.riwayat) Object.keys(s.riwayat).forEach(t => { if(!listTanggal.includes(t)) listTanggal.push(t); }); }); listTanggal.sort(); if(listTanggal.length===0) listTanggal.push(tglKeyHariIni);
+            let t = `<table class="w-full text-[10px] border-collapse"><thead class="bg-slate-50 text-slate-400 font-bold"><tr><th class="p-2 border border-slate-200 text-center">No</th><th class="p-2 border border-slate-200 min-w-[100px]">Nama</th>`;
+            listTanggal.forEach(x => { t += `<th class="p-2 border border-slate-200 text-center">${x.split("-")[2]}/${x.split("-")[1]}</th>`; });
+            t += `<th class="p-2 border border-slate-200 text-emerald-600 text-center">H</th><th class="p-2 border border-slate-200 text-amber-500 text-center">I</th><th class="p-2 border border-slate-200 text-sky-500 text-center">S</th><th class="p-2 border border-slate-200 text-rose-500 text-center">A</th></tr></thead><tbody>`;
+            perubahanSiswaLokal.forEach((s, i) => {
+                t += `<tr class="hover:bg-slate-50 text-slate-600"><td class="p-2 border border-slate-100 text-center bg-slate-50/50">${i+1}</td><td class="p-2 border border-slate-100 font-bold text-slate-700">${s.nama}</td>`;
+                let hB=0, iB=0, sB=0, aB=0; listTanggal.forEach(x => { let sim = (s.riwayat && s.riwayat[x]) ? s.riwayat[x] : "-"; if(sim==="H") hB++; else if(sim==="I") iB++; else if(sim==="S") sB++; else if(sim==="A") aB++; let c = sim==="H"?"text-emerald-500":sim==="I"?"text-amber-500":sim==="S"?"text-sky-500":sim==="A"?"text-rose-500":"text-slate-300"; t += `<td class="p-2 border border-slate-100 text-center font-bold ${c}">${sim}</td>`; });
+                t += `<td class="p-2 border border-slate-100 text-center text-emerald-600 bg-emerald-50/20">${hB}</td><td class="p-2 border border-slate-100 text-center text-amber-600 bg-amber-50/20">${iB}</td><td class="p-2 border border-slate-100 text-center text-sky-600 bg-sky-50/20">${sB}</td><td class="p-2 border border-slate-100 text-center text-rose-600 bg-rose-50/20">${aB}</td></tr>`;
+            });
+            document.getElementById('container-tabel-grid-full').innerHTML = t + "</tbody></table>";
+        }
+        function tutupModalGrid() { document.getElementById('modal-grid-bulanan').style.display = "none"; }
+        
+        const canvas = document.getElementById('canvas-animasi'); const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        let bolls = []; for(let i=0; i<6; i++) { bolls.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, dx: (Math.random() - 0.5) * 0.2, dy: (Math.random() - 0.5) * 0.2, r: Math.random() * 10 + 5 }); }
+        function play() { ctx.clearRect(0, 0, canvas.width, canvas.height); bolls.forEach(b => { ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(167, 243, 208, 0.05)'; ctx.fill(); b.x += b.dx; b.y += b.dy; if(b.x+b.r > canvas.width || b.x-b.r < 0) b.dx = -b.dx; if(b.y+b.r > canvas.height || b.y-b.r < 0) b.dy = -b.dy; }); requestAnimationFrame(play); }
+        play();
+    </script>
+</body>
+</html>
