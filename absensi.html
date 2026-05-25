@@ -50,7 +50,7 @@
         <header class="bg-neutral-950/60 backdrop-blur-lg border-b border-neutral-800 py-3 px-6 sticky top-0 z-50 shadow-md no-print">
             <div class="max-w-4xl mx-auto flex justify-between items-center">
                 <a href="index.html" class="text-neutral-400 hover:text-orange-400 text-xs font-bold flex items-center gap-1 transition-colors">
-                    <i class="fa-solid fa-chevron-left text-[9px]"></i> Keluar Panel
+                    <i class="fa-solid fa-chevron-left text-[9px]"></i> Keluar
                 </a>
                 <h1 class="text-xs font-black text-white uppercase tracking-wide">Panel Guru: <span class="text-orange-400">Kelas VIII</span></h1>
                 <div class="text-[10px] text-neutral-400 font-bold bg-neutral-900 border border-neutral-800 px-2.5 py-1 rounded-md" id="tanggal-hari-ini"></div>
@@ -119,7 +119,7 @@
     <div id="modal-grid-bulanan" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-2 sm:p-6" style="display: none;">
         <div class="bg-neutral-950 border border-neutral-800 w-full max-w-4xl rounded-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden text-neutral-200">
             <div class="p-4 border-b border-neutral-800 flex justify-between items-center bg-neutral-900">
-                <h3 class="text-xs font-black text-white uppercase">Matriks Kehadiran Kelas VIII</h3>
+                <h3 class="text-xs font-black text-white uppercase">Rekap Kehadiran Kelas VIII</h3>
                 <button onclick="tutupModalGrid()" class="text-neutral-500 hover:text-white font-black text-xl px-2">&times;</button>
             </div>
             <div class="p-4 overflow-auto flex-1">
@@ -131,13 +131,15 @@
     <script>
         // ⚠️ MASUKKAN KONFIGURASI FIREBASE ASLI ANDA DI SINI 
         const firebaseConfig = {
-            apiKey: "AIzaSy...",
-            authDomain: "YOUR-PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR-PROJECT-default-rtdb.firebaseio.com",
-            projectId: "YOUR-PROJECT",
-            storageBucket: "YOUR-PROJECT.appspot.com",
-            messagingSenderId: "...",
-            appId: "..."
+            const firebaseConfig = {
+  apiKey: "AIzaSyDkhMo6-T6aNuFpMaTliZgPZ2hF0lbkUXg",
+  authDomain: "absen-siswa-e3046.firebaseapp.com",
+  databaseURL: "https://absen-siswa-e3046-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "absen-siswa-e3046",
+  storageBucket: "absen-siswa-e3046.firebasestorage.app",
+  messagingSenderId: "474422770496",
+  appId: "1:474422770496:web:473cdfc1005de347a898a5"
+};
         };
         
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
