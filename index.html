@@ -9,8 +9,8 @@
     <style>
         body, html { 
             margin: 0; padding: 0; overflow: hidden; height: 100%; 
-            background: linear-gradient(135deg, #f1f5f3 0%, #e3ede7 50%, #f7f3ed 100%);
-            color: #2c3e50;
+            background: linear-gradient(135deg, #0f0f12 0%, #1a1510 50%, #2c1a04 100%);
+            color: #f8fafc;
         }
         #canvas-animasi { position: absolute; top: 0; left: 0; z-index: 0; }
         .konten-utama { 
@@ -31,55 +31,55 @@
     <canvas id="canvas-animasi"></canvas>
 
     <div class="konten-utama p-6 text-center">
-        <h1 class="text-4xl md:text-5xl font-black mb-3 fade-smooth tracking-tight text-slate-800">Kelas Ust. Tubagus</h1>
-        <p class="text-sm md:text-base text-slate-400 font-medium mb-12 fade-smooth" style="animation-delay: 0.1s;">Sistem Absensi Kehadiran Online &bull; Kelas VIII</p>
+        <h1 class="text-4xl md:text-5xl font-black mb-3 fade-smooth tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500">Kelas Ust. Tubagus</h1>
+        <p class="text-sm md:text-base text-orange-200/60 font-medium mb-12 fade-smooth" style="animation-delay: 0.1s;">Sistem Absensi Kehadiran Online &bull; Kelas VIII</p>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl w-full px-4 fade-smooth" style="animation-delay: 0.2s;">
-            <a href="siswa.html" class="group bg-white/60 backdrop-blur-lg border border-emerald-100/50 p-6 rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-emerald-300 hover:bg-white/90 shadow-sm hover:shadow-md transition-all duration-300">
-                <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-2xl group-hover:scale-105 transition-transform duration-300">
+            <a href="siswa.html" class="group bg-neutral-900/50 backdrop-blur-lg border border-orange-500/10 p-6 rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-orange-500/40 hover:bg-neutral-900/80 shadow-xl transition-all duration-300">
+                <div class="w-14 h-14 bg-orange-500/10 text-orange-400 rounded-xl flex items-center justify-center text-2xl group-hover:scale-105 group-hover:bg-orange-500/20 transition-all duration-300">
                     <i class="fa-solid fa-user-graduate"></i>
                 </div>
-                <span class="font-bold text-xs tracking-wider uppercase text-slate-700">Portal Siswa</span>
-                <span class="text-[11px] text-slate-400 text-center font-medium">Cek mandiri grafik & riwayat absensi Anda</span>
+                <span class="font-bold text-xs tracking-wider uppercase text-orange-300">Portal Siswa</span>
+                <span class="text-[11px] text-neutral-400 text-center font-medium">Cek mandiri grafik & riwayat absensi Anda</span>
             </a>
 
-            <button onclick="bukaModalLogin()" class="group bg-white/60 backdrop-blur-lg border border-orange-100/50 p-6 rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-orange-300 hover:bg-white/90 shadow-sm hover:shadow-md transition-all duration-300 text-left w-full cursor-pointer">
-                <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center text-2xl mx-auto group-hover:scale-105 transition-transform duration-300">
+            <button onclick="bukaModalLogin()" class="group bg-neutral-900/50 backdrop-blur-lg border border-amber-500/10 p-6 rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-amber-500/40 hover:bg-neutral-900/80 shadow-xl transition-all duration-300 text-left w-full cursor-pointer">
+                <div class="w-14 h-14 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-2xl mx-auto group-hover:scale-105 group-hover:bg-amber-500/20 transition-all duration-300">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <span class="font-bold text-xs tracking-wider uppercase text-center w-full block text-slate-700">Portal Pengajar</span>
-                <span class="text-[11px] text-slate-400 text-center font-medium block w-full">Kelola data, input absen harian & rekap excel</span>
+                <span class="font-bold text-xs tracking-wider uppercase text-center w-full block text-amber-300">Portal Pengajar</span>
+                <span class="text-[11px] text-neutral-400 text-center font-medium block w-full">Kelola data, input absen harian & rekap excel</span>
             </button>
         </div>
 
-        <footer class="absolute bottom-6 text-[11px] font-bold text-slate-300 fade-smooth" style="animation-delay: 0.3s;">
+        <footer class="absolute bottom-6 text-[11px] font-bold text-neutral-600 fade-smooth" style="animation-delay: 0.3s;">
             &copy; 2026 E-Absensi Kelas Ust. Tubagus.
         </footer>
     </div>
 
-    <div id="modal-login" class="modal-inactive fixed inset-0 z-50 bg-slate-900/10 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300">
-        <div class="bg-white/95 backdrop-blur-xl border border-slate-100 w-full max-w-sm rounded-2xl p-6 shadow-xl text-slate-700 transition-all duration-300">
-            <button onclick="tutupModalLogin()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors p-1"><i class="fa-solid fa-xmark"></i></button>
+    <div id="modal-login" class="modal-inactive fixed inset-0 z-50 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 transition-all duration-300">
+        <div class="bg-neutral-950/90 backdrop-blur-xl border border-neutral-800 w-full max-w-sm rounded-2xl p-6 shadow-2xl text-neutral-200 transition-all duration-300">
+            <button onclick="tutupModalLogin()" class="absolute top-4 right-4 text-neutral-500 hover:text-white transition-colors p-1"><i class="fa-solid fa-xmark"></i></button>
 
             <div class="text-center mb-5">
-                <div class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-lg mx-auto mb-2"><i class="fa-solid fa-shield-halved"></i></div>
-                <h3 class="text-base font-black text-slate-800 tracking-tight">Otentikasi Pengajar</h3>
+                <div class="w-11 h-11 bg-orange-500/10 text-orange-400 rounded-xl flex items-center justify-center text-lg mx-auto mb-2"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3 class="text-base font-black text-white tracking-tight">Otentikasi Pengajar</h3>
             </div>
 
-            <div id="login-error" class="hidden mb-3 bg-rose-50 border border-rose-100 text-rose-500 text-xs font-bold p-2.5 rounded-xl flex items-center gap-2 animate-pulse">
+            <div id="login-error" class="hidden mb-3 bg-rose-950/40 border border-rose-800 text-rose-400 text-xs font-bold p-2.5 rounded-xl flex items-center gap-2 animate-pulse">
                 <i class="fa-solid fa-circle-exclamation"></i> <span>Kombinasi akun salah!</span>
             </div>
 
             <form onsubmit="prosesLoginAdmin(event)" class="space-y-3">
                 <div>
-                    <label class="block text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-1">Username</label>
-                    <input type="text" id="username-admin" placeholder="Username..." required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-400 text-slate-700 transition-colors">
+                    <label class="block text-[10px] font-bold uppercase text-neutral-400 tracking-wider mb-1">Username</label>
+                    <input type="text" id="username-admin" placeholder="Username..." required class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-white transition-colors">
                 </div>
                 <div>
-                    <label class="password">Kata Sandi</label>
-                    <input type="password" id="password-admin" placeholder="••••••••" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-emerald-400 text-slate-700 transition-colors">
+                    <label class="block text-[10px] font-bold uppercase text-neutral-400 tracking-wider mb-1">Kata Sandi</label>
+                    <input type="password" id="password-admin" placeholder="••••••••" required class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-orange-500 text-white transition-colors">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs shadow-sm transition-all duration-200 mt-2 cursor-pointer">Masuk Sistem</button>
+                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 rounded-xl text-xs shadow-lg transition-all duration-200 mt-2 cursor-pointer">Masuk Sistem</button>
             </form>
         </div>
     </div>
@@ -93,7 +93,7 @@
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             bola.forEach(b => {
-                ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(167, 243, 208, 0.12)'; ctx.fill(); ctx.closePath(); b.x += b.dx; b.y += b.dy;
+                ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fillStyle = 'rgba(249, 115, 22, 0.04)'; ctx.fill(); ctx.closePath(); b.x += b.dx; b.y += b.dy;
                 if (b.x + b.r > canvas.width || b.x - b.r < 0) b.dx = -b.dx; if (b.y + b.r > canvas.height || b.y - b.r < 0) b.dy = -b.dy;
             });
             requestAnimationFrame(draw);
@@ -110,7 +110,6 @@
             const passVal = document.getElementById('password-admin').value.trim();
 
             if (userVal === "resiwahyuh" && passVal === "wakasis") { 
-                // Sukses login langsung melompat ke halaman lembar input absensi
                 window.location.href = "absensi.html"; 
             } else { 
                 errorNotif.classList.remove('hidden'); 
