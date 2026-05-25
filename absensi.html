@@ -130,7 +130,15 @@
 
     <script>
         // ISI KONFIGURASI FIREBASE ASLI ANDA DI SINI
-        const firebaseConfig = { apiKey: "AIzaSy...", authDomain: "YOUR-PROJECT.firebaseapp.com", databaseURL: "https://YOUR-PROJECT-default-rtdb.firebaseio.com", projectId: "YOUR-PROJECT" };
+       const firebaseConfig = {
+  apiKey: "AIzaSyDkhMo6-T6aNuFpMaTliZgPZ2hF0lbkUXg",
+  authDomain: "absen-siswa-e3046.firebaseapp.com",
+  databaseURL: "https://absen-siswa-e3046-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "absen-siswa-e3046",
+  storageBucket: "absen-siswa-e3046.firebasestorage.app",
+  messagingSenderId: "474422770496",
+  appId: "1:474422770496:web:473cdfc1005de347a898a5"
+}; };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const databaseCloud = firebase.database(); 
         const namaKelas = 'VIII'; // Mengunci sistem database murni pada jalur /VIII
