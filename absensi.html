@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Absensi Online - Kelas Ust. Tubagus</title>
+    <title>Sistem Absensi Online - Kelas VIII</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -49,16 +49,16 @@
     <div class="konten-wrapper">
         <header class="bg-white/50 backdrop-blur-lg border-b border-slate-100 py-3 px-6 sticky top-0 z-50 shadow-2xs no-print">
             <div class="max-w-4xl mx-auto flex justify-between items-center">
-                <a href="dashboard.html" class="text-slate-400 hover:text-emerald-600 text-xs font-bold flex items-center gap-1 transition-colors">
-                    <i class="fa-solid fa-chevron-left text-[9px]"></i> Kembali
+                <a href="index.html" class="text-slate-400 hover:text-emerald-600 text-xs font-bold flex items-center gap-1 transition-colors">
+                    <i class="fa-solid fa-chevron-left text-[9px]"></i> Keluar Panel
                 </a>
-                <h1 class="text-xs font-black text-slate-800 uppercase tracking-wide">Panel Guru: <span id="judul-kelas" class="text-emerald-600">...</span></h1>
+                <h1 class="text-xs font-black text-slate-800 uppercase tracking-wide">Panel Guru: <span class="text-emerald-600">Kelas VIII</span></h1>
                 <div class="text-[10px] text-slate-400 font-bold" id="tanggal-hari-ini"></div>
             </div>
         </header>
 
         <main class="max-w-4xl mx-auto p-4 md:p-6 fade-smooth">
-            <div id="notif-sukses" style="display: none;" class="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold p-3 rounded-xl flex items-center gap-2 animate-bounce">
+            <div id="notif-sukses" style="display: none;" class="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold p-3 rounded-xl flex items-center gap-2">
                 <i class="fa-solid fa-circle-check text-emerald-500"></i> Absensi hari ini berhasil disimpan!
             </div>
 
@@ -79,16 +79,16 @@
             </div>
 
             <div class="mb-5 bg-white/60 backdrop-blur-lg p-4 rounded-2xl border border-slate-100/70 shadow-2xs no-print">
-                <textarea id="textarea-excel" rows="2" placeholder="Paste data kolom nama dari Excel di sini..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-emerald-400 text-slate-700 placeholder-slate-400"></textarea>
+                <textarea id="textarea-excel" rows="2" placeholder="Paste data kolom nama siswa kelas VIII dari Excel di sini..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-emerald-400 text-slate-700 placeholder-slate-400"></textarea>
                 <div class="flex justify-between items-center mt-2.5">
-                    <button type="button" onclick="bersihkanSemuaSiswa()" class="text-[11px] text-rose-500 font-bold cursor-pointer"><i class="fa-solid fa-trash"></i> Kosongkan</button>
+                    <button type="button" onclick="bersihkanSemuaSiswa()" class="text-[11px] text-rose-500 font-bold cursor-pointer"><i class="fa-solid fa-trash"></i> Kosongkan Kelas</button>
                     <button type="button" onclick="prosesTambahMassalExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-xl text-xs cursor-pointer shadow-2xs transition-colors">Suntik Nama</button>
                 </div>
             </div>
 
             <div class="bg-white/60 backdrop-blur-lg rounded-2xl border border-slate-100/70 shadow-2xs overflow-hidden">
                 <div class="p-4 border-b border-slate-100 flex justify-between items-center no-print">
-                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-wider">Lembar Kehadiran</h2>
+                    <h2 class="text-xs font-black text-slate-800 uppercase tracking-wider">Lembar Kehadiran VIII</h2>
                     <div class="flex gap-2">
                         <button onclick="unduhRekapExcel()" class="bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold px-3 py-1.5 rounded-lg text-xs cursor-pointer transition-colors">CSV</button>
                         <button onclick="simpanAbsensiKeCloud()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs cursor-pointer transition-colors">Simpan Cloud</button>
@@ -107,7 +107,7 @@
                         </thead>
                         <tbody id="tabel-murid-body" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="4" class="p-6 text-center text-xs font-bold text-slate-400"><i class="fa-solid fa-spinner animate-spin text-emerald-500 mr-1.5"></i> Loading...</td>
+                                <td colspan="4" class="p-6 text-center text-xs font-bold text-slate-400"><i class="fa-solid fa-spinner animate-spin text-emerald-500 mr-1.5"></i> Loading data...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -117,9 +117,9 @@
     </div>
 
     <div id="modal-grid-bulanan" class="fixed inset-0 z-50 bg-slate-900/10 backdrop-blur-sm flex items-center justify-center p-2 sm:p-6" style="display: none;">
-        <div class="bg-white border border-slate-100 w-full max-w-4xl rounded-2xl max-h-[85vh] flex flex-col shadow-xl overflow-hidden text-slate-700 animate-fade">
+        <div class="bg-white border border-slate-100 w-full max-w-4xl rounded-2xl max-h-[85vh] flex flex-col shadow-xl overflow-hidden text-slate-700">
             <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-                <h3 class="text-xs font-black text-slate-800 uppercase">Matriks Kehadiran</h3>
+                <h3 class="text-xs font-black text-slate-800 uppercase">Matriks Kehadiran Kelas VIII</h3>
                 <button onclick="tutupModalGrid()" class="text-slate-400 hover:text-slate-600 font-black text-lg px-2">&times;</button>
             </div>
             <div class="p-4 overflow-auto flex-1">
@@ -129,10 +129,18 @@
     </div>
 
     <script>
-        const firebaseConfig = { apiKey: "AIzaSy...", authDomain: "YOUR-PROJECT.firebaseapp.com", databaseURL: "https://YOUR-PROJECT-default-rtdb.firebaseio.com", projectId: "YOUR-PROJECT" };
+        // ISI CONFIGURASI FIREBASE ASLI ANDA DI SINI
+        const firebaseConfig = {
+  apiKey: "AIzaSyDkhMo6-T6aNuFpMaTliZgPZ2hF0lbkUXg",
+  authDomain: "absen-siswa-e3046.firebaseapp.com",
+  databaseURL: "https://absen-siswa-e3046-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "absen-siswa-e3046",
+  storageBucket: "absen-siswa-e3046.firebasestorage.app",
+  messagingSenderId: "474422770496",
+  appId: "1:474422770496:web:473cdfc1005de347a898a5" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const databaseCloud = firebase.database(); const namaKelas = localStorage.getItem('targetKelasPengajar') || 'X';
-        document.getElementById('judul-kelas').innerText = "Kelas " + namaKelas;
+        const databaseCloud = firebase.database(); 
+        const namaKelas = 'VIII'; // Mengunci database hanya ke cabang /VIII
 
         const tglSekarang = new Date();
         document.getElementById('tanggal-hari-ini').innerText = tglSekarang.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -143,7 +151,7 @@
         databaseCloud.ref('sekolah/' + namaKelas).on('value', (s) => { let list = amankanFormatFirebase(s.val()); renderTabelMurid(list); hitungUlangPersentaseHariIni(list); });
 
         function renderTabelMurid(arr) {
-            const tbody = document.getElementById('tabel-murid-body'); if (arr.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-xs text-slate-400">Kosong.</td></tr>`; return; }
+            const tbody = document.getElementById('tabel-murid-body'); if (arr.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-xs text-slate-400">Belum ada data siswa. Gunakan fitur impor Excel di atas.</td></tr>`; return; }
             let h = "";
             arr.forEach((s, idx) => {
                 let riwayat = (s.riwayat && s.riwayat[tglKeyHariIni]) ? s.riwayat[tglKeyHariIni] : "";
@@ -179,10 +187,10 @@
         }
 
         function prosesTambahMassalExcel() { const val = document.getElementById('textarea-excel').value.trim(); if(!val) return; let baris = val.split("\n"); let dBaru = [...perubahanSiswaLokal]; baris.forEach(b => { let n = b.replace(/\r/g, "").trim(); if(n) dBaru.push({ nama: n, hadir:0, izin:0, sakit:0, alfa:0, riwayat:{} }); }); databaseCloud.ref('sekolah/' + namaKelas).set(dBaru).then(() => document.getElementById('textarea-excel').value = ""); }
-        function hapusSiswaTunggal(i) { if(confirm("Hapus?")) { perubahanSiswaLokal.splice(i,1); databaseCloud.ref('sekolah/' + namaKelas).set(perubahanSiswaLokal); } }
-        function bersihkanSemuaSiswa() { if(confirm("Kosongkan?")) databaseCloud.ref('sekolah/' + namaKelas).set([]); }
+        function hapusSiswaTunggal(i) { if(confirm("Hapus siswa ini?")) { perubahanSiswaLokal.splice(i,1); databaseCloud.ref('sekolah/' + namaKelas).set(perubahanSiswaLokal); } }
+        function bersihkanSemuaSiswa() { if(confirm("Kosongkan satu kelas?")) databaseCloud.ref('sekolah/' + namaKelas).set([]); }
         
-        function unduhRekapExcel() { let csv = ["No,Nama Lengkap Murid,Total Hadir,Total Izin,Total Sakit,Total Alfa"]; perubahanSiswaLokal.forEach((s, i) => csv.push(`"${i+1}","${s.nama}","${s.hadir||0}","${s.izin||0}","${s.sakit||0}","${s.alfa||0}"`)); const b = new Blob([csv.join("\n")], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(b); link.setAttribute("download", `Rekap_${namaKelas}.csv`); link.click(); }
+        function unduhRekapExcel() { let csv = ["No,Nama Lengkap Murid,Total Hadir,Total Izin,Total Sakit,Total Alfa"]; perubahanSiswaLokal.forEach((s, i) => csv.push(`"${i+1}","${s.nama}","${s.hadir||0}","${s.izin||0}","${s.sakit||0}","${s.alfa||0}"`)); const b = new Blob([csv.join("\n")], { type: 'text/csv;charset=utf-8;' }); const link = document.createElement("a"); link.href = URL.createObjectURL(b); link.setAttribute("download", `Rekap_Kelas_VIII.csv`); link.click(); }
 
         function bukaModalGrid() {
             document.getElementById('modal-grid-bulanan').style.display = "flex";
